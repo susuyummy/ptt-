@@ -1,0 +1,16 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[cod]
+recursive-exclude * *.so
+recursive-exclude * .DS_Store
+recursive-exclude * .git
+recursive-exclude * .gitignore
+recursive-exclude * .idea
+recursive-exclude * .vscode
+recursive-exclude * *.log
+recursive-exclude * *.db
+recursive-exclude * *.xlsx
+recursive-exclude * *.dmg 

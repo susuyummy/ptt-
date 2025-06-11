@@ -1,0 +1,5 @@
+requests>=2.31.0
+beautifulsoup4>=4.12.2
+jieba>=0.42.1
+matplotlib>=3.8.2
+schedule>=1.2.1
