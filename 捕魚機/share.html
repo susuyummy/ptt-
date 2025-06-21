@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>捕魚機遊戲 - 分享頁面</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .share-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .game-info {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #007bff;
+        }
+        .access-info {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+        }
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #333;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            margin: 15px 0;
+            word-break: break-all;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            border-radius: 15px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #666;
+        }
+        .instructions {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+            text-align: left;
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .play-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+        }
+        .feature {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="share-container">
+        <h1>🎣 捕魚機遊戲</h1>
+        
+        <div class="game-info">
+            <h3>🎮 遊戲特色</h3>
+            <div class="feature">⚡ 連續電擊</div>
+            <div class="feature">🎯 智能鎖定</div>
+            <div class="feature">🐟 多種魚類</div>
+            <div class="feature">💥 連鎖反應</div>
+        </div>
+
+        <div class="access-info">
+            <h3>🌐 訪問地址</h3>
+            <div class="url" id="gameUrl">http://192.168.213.179:8080</div>
+            <a href="http://192.168.213.179:8080" class="play-button" target="_blank">
+                🎮 立即遊玩
+            </a>
+        </div>
+
+        <div class="qr-placeholder">
+            掃描二維碼<br>
+            快速訪問<br>
+            (可使用線上二維碼生成器)
+        </div>
+
+        <div class="instructions">
+            <h3>📱 如何與朋友分享</h3>
+            <ol>
+                <li><strong>同一WiFi網路</strong>：朋友連接相同的WiFi，直接訪問上方網址</li>
+                <li><strong>手機訪問</strong>：在手機瀏覽器中輸入網址即可遊玩</li>
+                <li><strong>多人同時遊玩</strong>：每個人都可以同時打開遊戲</li>
+                <li><strong>最佳體驗</strong>：建議使用Chrome或Safari瀏覽器</li>
+            </ol>
+        </div>
+
+        <div style="margin-top: 30px; color: #666; font-size: 0.9em;">
+            <p>💡 提示：確保所有設備都連接到相同的WiFi網路</p>
+            <p>🔧 如果無法訪問，請檢查防火牆設置</p>
+        </div>
+    </div>
+
+    <script>
+        // 自動複製網址功能
+        document.getElementById('gameUrl').addEventListener('click', function() {
+            const url = this.textContent;
+            navigator.clipboard.writeText(url).then(function() {
+                alert('網址已複製到剪貼板！');
+            }).catch(function() {
+                // 降級方案
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('網址已複製到剪貼板！');
+            });
+        });
+
+        // 顯示當前時間
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-TW');
+            document.title = `捕魚機遊戲 - ${timeStr}`;
+        }
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html> 

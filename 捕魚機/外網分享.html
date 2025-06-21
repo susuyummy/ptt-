@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>捕魚機遊戲 - 外網分享</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .share-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #155724;
+        }
+        .ngrok-info {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #28a745;
+        }
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #333;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            margin: 15px 0;
+            word-break: break-all;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .url:hover {
+            transform: scale(1.02);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 4px 8px rgba(0,255,0,0.2);
+        }
+        .instructions {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+            text-align: left;
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        .play-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+        }
+        .feature {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+        .warning {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+        .setup-steps {
+            background: #d1ecf1;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #17a2b8;
+            text-align: left;
+        }
+        .code {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="share-container">
+        <h1>🌐 捕魚機遊戲 - 外網分享</h1>
+        
+        <div class="status">
+            <h3>✅ 外網隧道狀態</h3>
+            <p>ngrok隧道已啟動，外網朋友現在可以訪問您的遊戲！</p>
+        </div>
+
+        <div class="ngrok-info">
+            <h3>🌐 外網訪問地址</h3>
+            <p>請將以下地址分享給您的朋友：</p>
+            <div class="url" id="ngrokUrl" onclick="copyUrl(this)">
+                https://learn-lands-sic-kb.trycloudflare.com
+            </div>
+            <p><small>點擊地址自動複製到剪貼板</small></p>
+        </div>
+
+        <div class="instructions">
+            <h3>📱 使用說明</h3>
+            <ol>
+                <li><strong>分享地址</strong>：將上方的外網地址發送給朋友</li>
+                <li><strong>無距離限制</strong>：朋友在任何地方都可以訪問</li>
+                <li><strong>多人同時遊玩</strong>：支援多個朋友同時遊玩</li>
+                <li><strong>任何設備</strong>：手機、電腦、平板都可以訪問</li>
+                <li><strong>免費使用</strong>：ngrok免費版本每月有使用限制</li>
+            </ol>
+        </div>
+
+        <div class="setup-steps">
+            <h3>🔧 技術說明</h3>
+            <p><strong>本地伺服器：</strong></p>
+            <div class="code">python3 -m http.server 8080 --bind 0.0.0.0</div>
+            
+            <p><strong>ngrok隧道：</strong></p>
+            <div class="code">ngrok http 8080</div>
+            
+            <p><strong>檢查隧道狀態：</strong></p>
+            <div class="code">curl http://localhost:4040/api/tunnels</div>
+        </div>
+
+        <div class="warning">
+            <h3>⚠️ 注意事項</h3>
+            <ul>
+                <li>ngrok免費版本有連線數量和時間限制</li>
+                <li>隧道地址每次重啟都會改變</li>
+                <li>確保本地伺服器持續運行</li>
+                <li>如果地址無法訪問，請重新啟動ngrok</li>
+            </ul>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <div class="feature">⚡ 連續電擊</div>
+            <div class="feature">🎯 智能鎖定</div>
+            <div class="feature">🐟 6種魚類</div>
+            <div class="feature">💥 連鎖反應</div>
+            <div class="feature">📱 多平台支援</div>
+        </div>
+
+        <div style="margin-top: 30px; color: #666; font-size: 0.9em;">
+            <p>💡 提示：如需長期分享，建議使用付費版ngrok或部署到雲端伺服器</p>
+        </div>
+    </div>
+
+    <script>
+        // 複製網址功能
+        function copyUrl(element) {
+            const url = element.textContent;
+            if (url !== '正在獲取外網地址...') {
+                navigator.clipboard.writeText(url).then(function() {
+                    element.style.background = '#28a745';
+                    element.style.color = 'white';
+                    element.textContent = '已複製到剪貼板！';
+                    
+                    setTimeout(() => {
+                        element.style.background = '#333';
+                        element.style.color = '#00ff00';
+                        element.textContent = url;
+                    }, 2000);
+                }).catch(function() {
+                    alert('複製失敗，請手動複製網址');
+                });
+            }
+        }
+
+        // 嘗試獲取ngrok地址
+        async function getNgrokUrl() {
+            try {
+                const response = await fetch('http://localhost:4040/api/tunnels');
+                const data = await response.json();
+                
+                if (data.tunnels && data.tunnels.length > 0) {
+                    const tunnel = data.tunnels.find(t => t.config.addr === 'http://localhost:8080');
+                    if (tunnel) {
+                        const url = tunnel.public_url;
+                        document.getElementById('ngrokUrl').textContent = url;
+                        
+                        // 更新頁面標題
+                        document.title = `捕魚機遊戲 - ${url}`;
+                    }
+                }
+            } catch (error) {
+                document.getElementById('ngrokUrl').textContent = '無法獲取地址，請手動檢查ngrok狀態';
+                document.getElementById('ngrokUrl').style.background = '#dc3545';
+                document.getElementById('ngrokUrl').style.color = 'white';
+            }
+        }
+
+        // 頁面載入時嘗試獲取地址
+        window.addEventListener('load', () => {
+            setTimeout(getNgrokUrl, 2000);
+            
+            // 每30秒檢查一次
+            setInterval(getNgrokUrl, 30000);
+        });
+
+        // 顯示當前時間
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-TW');
+            document.title = `捕魚機遊戲 - 外網分享 ${timeStr}`;
+        }
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html> 

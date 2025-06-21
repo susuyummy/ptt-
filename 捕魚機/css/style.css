@@ -1,0 +1,802 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #87CEEB 0%, #4682B4 50%, #191970 100%);
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#gameContainer {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameArea {
+    position: relative;
+    border: 3px solid #FFD700;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    background: radial-gradient(circle at center, #1E90FF 0%, #4169E1 100%);
+    overflow: hidden;
+}
+
+#gameCanvas {
+    display: block;
+    cursor: default;
+    background: transparent;
+}
+
+#ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#scoreBoard {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #FFD700;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 200px;
+    pointer-events: auto;
+}
+
+#scoreBoard div {
+    margin-bottom: 5px;
+}
+
+#scoreBoard div:last-child {
+    margin-bottom: 0;
+}
+
+#controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+#controls button {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border: none;
+    border-radius: 5px;
+    color: #000;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(45deg, #FFA500, #FFD700);
+}
+
+#controls button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#gameOver {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+#gameOverContent {
+    background: linear-gradient(45deg, #4169E1, #1E90FF);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 3px solid #FFD700;
+}
+
+#gameOverContent h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#gameOverContent p {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+#restartBtn {
+    padding: 15px 30px;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#restartBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+#loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+}
+
+#loadingContent {
+    text-align: center;
+    color: white;
+}
+
+#loadingContent h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#progressBar {
+    width: 300px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+#progress {
+    height: 100%;
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 水波紋動畫效果 */
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+.ripple-effect {
+    position: absolute;
+    border: 2px solid #FFD700;
+    border-radius: 50%;
+    animation: ripple 0.6s ease-out;
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* 炮彈爆炸效果 */
+@keyframes explosion {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.explosion-effect {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #FFD700 0%, #FF4500 50%, transparent 100%);
+    border-radius: 50%;
+    animation: explosion 0.5s ease-out;
+    pointer-events: none;
+    z-index: 60;
+}
+
+/* 分數增加動畫 */
+@keyframes scoreFloat {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+.score-float {
+    position: absolute;
+    color: #FFD700;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    animation: scoreFloat 1s ease-out;
+    pointer-events: none;
+    z-index: 70;
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+    #gameArea {
+        width: 90vw;
+        height: 60vh;
+    }
+    
+    #gameCanvas {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    #scoreBoard {
+        font-size: 14px;
+        padding: 10px;
+        min-width: 150px;
+    }
+    
+    #controls button {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+    
+    #gameOverContent {
+        padding: 30px;
+    }
+    
+    #gameOverContent h2 {
+        font-size: 28px;
+    }
+    
+    #gameOverContent p {
+        font-size: 20px;
+    }
+    
+    /* 賭注面板手機適配 */
+    #betPanel {
+        top: 10px;
+        right: 5px;
+        left: 5px;
+        width: auto;
+        max-width: 300px;
+        font-size: 12px;
+        padding: 10px;
+    }
+    
+    #betHeader h3 {
+        font-size: 14px;
+    }
+    
+    .bet-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    #betPresets {
+        gap: 3px;
+    }
+    
+    .preset-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+/* 連鎖閃電效果 - 性能優化版 */
+@keyframes lightning {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.8); 
+    }
+    25% { 
+        opacity: 1; 
+        transform: scale(1.1); 
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: scale(0.9); 
+    }
+}
+
+@keyframes chainPulse {
+    0% { 
+        filter: drop-shadow(0 0 10px #00FFFF) drop-shadow(0 0 20px #FFFFFF) brightness(1.5);
+        transform: scale(1);
+    }
+    25% { 
+        filter: drop-shadow(0 0 25px #00FFFF) drop-shadow(0 0 35px #FFFFFF) brightness(2.5);
+        transform: scale(1.15);
+    }
+    50% { 
+        filter: drop-shadow(0 0 30px #00FFFF) drop-shadow(0 0 40px #FFFFFF) brightness(3);
+        transform: scale(1.2);
+    }
+    75% { 
+        filter: drop-shadow(0 0 25px #00FFFF) drop-shadow(0 0 35px #FFFFFF) brightness(2.5);
+        transform: scale(1.1);
+    }
+    100% { 
+        filter: drop-shadow(0 0 10px #00FFFF) drop-shadow(0 0 20px #FFFFFF) brightness(1.5);
+        transform: scale(1);
+    }
+}
+
+.chain-lightning {
+    animation: lightning 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.chain-lightning svg {
+    animation: chainPulse 0.3s ease-in-out;
+}
+
+/* 電火花效果 */
+.electric-spark {
+    animation: sparkFly 0.4s ease-out forwards;
+}
+
+@keyframes sparkFly {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 5px #FFFFFF) brightness(2);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.5);
+        filter: drop-shadow(0 0 15px #00FFFF) brightness(3);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+        filter: drop-shadow(0 0 25px #00FFFF) brightness(1);
+    }
+}
+
+/* 連鎖特效文字 */
+.chain-effect {
+    position: absolute;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    pointer-events: none;
+    z-index: 1000;
+    animation: chainTextFloat 1s ease-out forwards;
+}
+
+@keyframes chainTextFloat {
+    0% {
+        opacity: 1;
+        transform: scale(0.5) translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) translateY(-20px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1) translateY(-40px);
+    }
+}
+
+/* 多魚群特效 */
+@keyframes fishSchoolSpawn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fish-school-spawn {
+    animation: fishSchoolSpawn 0.8s ease-out;
+}
+
+/* 閃電炮口特效 */
+@keyframes lightningFlash {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+        filter: brightness(1) saturate(1);
+    }
+    25% {
+        opacity: 1;
+        transform: scale(1.5);
+        filter: brightness(4) saturate(3);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.2);
+        filter: brightness(3) saturate(2.5);
+    }
+    75% {
+        opacity: 0.6;
+        transform: scale(1);
+        filter: brightness(2) saturate(2);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: brightness(1) saturate(1);
+    }
+}
+
+.lightning-muzzle-flash {
+    animation: lightningFlash 0.4s ease-out;
+}
+
+/* 電弧特效 */
+@keyframes electricArc {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: brightness(2);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.2) rotate(180deg);
+        filter: brightness(3);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) rotate(360deg);
+        filter: brightness(1);
+    }
+}
+
+.electric-arc {
+    animation: electricArc 0.2s ease-out;
+}
+
+/* 自動閃電攻擊指示器 */
+.auto-lightning-indicator {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 3px solid #00FFFF;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 70;
+    animation: lightningTarget 1s ease-in-out infinite;
+}
+
+@keyframes lightningTarget {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        border-color: #00FFFF;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+        border-color: #FFFFFF;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        border-color: #00FFFF;
+    }
+}
+
+/* 連續電擊特效 */
+.continuous-lightning {
+    animation: continuousLightning 0.05s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes continuousLightning {
+    0% {
+        opacity: 0.9;
+        filter: drop-shadow(0 0 12px #00FFFF) brightness(2.5);
+    }
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 18px #FFFFFF) brightness(3.5);
+    }
+}
+
+/* 連續電擊目標指示器 */
+.continuous-target-indicator {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #00FFFF;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 75;
+    animation: continuousTargetPulse 0.2s ease-in-out infinite;
+}
+
+@keyframes continuousTargetPulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        border-color: #00FFFF;
+        box-shadow: 0 0 10px #00FFFF;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.8;
+        border-color: #FFFFFF;
+        box-shadow: 0 0 20px #FFFFFF;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        border-color: #00FFFF;
+        box-shadow: 0 0 10px #00FFFF;
+    }
+}
+
+/* 電擊傷害數字 */
+.lightning-damage {
+    position: absolute;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: #00FFFF;
+    text-shadow: 
+        0 0 5px #FFFFFF,
+        0 0 10px #00FFFF,
+        2px 2px 4px rgba(0,0,0,0.8);
+    pointer-events: none;
+    z-index: 90;
+    animation: lightningDamageFloat 0.8s ease-out forwards;
+}
+
+@keyframes lightningDamageFloat {
+    0% {
+        opacity: 1;
+        transform: scale(0.8) translateY(0);
+    }
+    25% {
+        opacity: 1;
+        transform: scale(1.2) translateY(-10px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1) translateY(-30px);
+    }
+}
+
+/* 炮台連續電擊充能效果 */
+.cannon-charging {
+    animation: cannonCharging 1s ease-in-out infinite;
+}
+
+@keyframes cannonCharging {
+    0% {
+        filter: drop-shadow(0 0 10px #00FFFF) brightness(1.2);
+    }
+    50% {
+        filter: drop-shadow(0 0 25px #FFFFFF) brightness(1.8);
+    }
+    100% {
+        filter: drop-shadow(0 0 10px #00FFFF) brightness(1.2);
+    }
+}
+
+/* 賭注面板樣式 - 移到遊戲畫布外面 */
+#betPanel {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.95);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    font-family: Arial, sans-serif;
+    pointer-events: auto;
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    min-width: 220px;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+#betHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #FFD700;
+    padding-bottom: 10px;
+}
+
+#betHeader h3 {
+    margin: 0;
+    color: #FFD700;
+    font-size: 16px;
+}
+
+#attackStatus {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: rgba(0, 255, 0, 0.2);
+    color: #00FF00;
+}
+
+#betControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.bet-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.bet-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(255, 215, 0, 0.5);
+}
+
+.bet-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.5;
+}
+
+#betInfo {
+    text-align: center;
+    flex: 1;
+}
+
+#betAmount, #damageInfo {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+#betValue, #damageValue {
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#betPresets {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.preset-btn {
+    padding: 8px 12px;
+    border: 1px solid #FFD700;
+    border-radius: 8px;
+    background: rgba(255, 215, 0, 0.1);
+    color: #FFD700;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.preset-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.preset-btn.active {
+    background: #FFD700;
+    color: #000;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* 金幣相關動畫 */
+@keyframes coinFloat {
+    0% { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: translateY(-30px); 
+    }
+}
+
+.coin-reward {
+    position: absolute;
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 100;
+    animation: coinFloat 1s ease-out forwards;
+}
+
+@keyframes warningFlash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.insufficient-coins {
+    animation: warningFlash 0.5s ease-in-out 2;
+} 
