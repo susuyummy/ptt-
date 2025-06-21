@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>捕魚達人 - 經典捕魚機遊戲</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css?v=2">
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="gameArea">
+            <canvas id="gameCanvas" width="980" height="600"></canvas>
+            <div id="ui">
+                <div id="scoreBoard">
+                    <div id="score">分數: <span id="scoreValue">10000</span></div>
+                    <div id="coins">金幣: <span id="coinsValue">1000</span></div>
+                    <div id="cannonLevel">炮台等級: <span id="cannonLevelValue">1</span></div>
+                </div>
+                
+                <!-- 賭注控制面板 - 強制顯示 -->
+                <div id="betPanel" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
+                    <div id="betHeader">
+                        <h3>🎯 賭注設定</h3>
+                        <span id="attackStatus">可攻擊</span>
+                    </div>
+                    <div id="betControls">
+                        <button id="decreaseBet" class="bet-btn">-</button>
+                        <div id="betInfo">
+                            <div id="betAmount">
+                                <span>賭注: </span>
+                                <span id="betValue">2</span>
+                            </div>
+                            <div id="damageInfo">
+                                <span>傷害: </span>
+                                <span id="damageValue">2</span>
+                            </div>
+                        </div>
+                        <button id="increaseBet" class="bet-btn">+</button>
+                    </div>
+                    <div id="betPresets">
+                        <button class="preset-btn" data-bet="1">1</button>
+                        <button class="preset-btn" data-bet="2">2</button>
+                        <button class="preset-btn" data-bet="3">3</button>
+                        <button class="preset-btn" data-bet="5">5</button>
+                        <button class="preset-btn" data-bet="10">10</button>
+                        <button class="preset-btn" data-bet="20">20</button>
+                        <button class="preset-btn" data-bet="50">50</button>
+                    </div>
+                </div>
+                
+                <div id="controls">
+                    <button id="cannonUpgrade" style="display: none;">升級炮台</button>
+                    <button id="pauseBtn">暫停</button>
+                </div>
+            </div>
+        </div>
+        <div id="gameOver" class="hidden">
+            <div id="gameOverContent">
+                <h2>遊戲結束</h2>
+                <p>最終分數: <span id="finalScore">0</span></p>
+                <button id="restartBtn">重新開始</button>
+            </div>
+        </div>
+        <div id="loading">
+            <div id="loadingContent">
+                <h2>載入中...</h2>
+                <div id="progressBar">
+                    <div id="progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js?v=2"></script>
+    <script src="js/fish.js?v=2"></script>
+    <script src="js/cannon.js?v=2"></script>
+    <script src="js/bullet.js?v=2"></script>
+    <script src="js/fishManager.js?v=2"></script>
+    <script src="js/game.js?v=2"></script>
+    <script src="js/main.js?v=2"></script>
+</body>
+</html> 

@@ -5,80 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>捕魚達人 - 經典捕魚機遊戲</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css?v=2">
+    <title>🎮 遊戲中心 - susuyummy</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+        .game-card {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 10px 25px rgba(255,107,107,0.3);
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255,107,107,0.4);
+        }
+        .game-title {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .game-description {
+            font-size: 1em;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .feature {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 15px;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+        .footer {
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .github-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .github-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <div id="gameContainer">
-        <div id="gameArea">
-            <canvas id="gameCanvas" width="980" height="600"></canvas>
-            <div id="ui">
-                <div id="scoreBoard">
-                    <div id="score">分數: <span id="scoreValue">10000</span></div>
-                    <div id="coins">金幣: <span id="coinsValue">1000</span></div>
-                    <div id="cannonLevel">炮台等級: <span id="cannonLevelValue">1</span></div>
-                </div>
-                
-                <!-- 賭注控制面板 - 強制顯示 -->
-                <div id="betPanel" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
-                    <div id="betHeader">
-                        <h3>🎯 賭注設定</h3>
-                        <span id="attackStatus">可攻擊</span>
-                    </div>
-                    <div id="betControls">
-                        <button id="decreaseBet" class="bet-btn">-</button>
-                        <div id="betInfo">
-                            <div id="betAmount">
-                                <span>賭注: </span>
-                                <span id="betValue">2</span>
-                            </div>
-                            <div id="damageInfo">
-                                <span>傷害: </span>
-                                <span id="damageValue">2</span>
-                            </div>
-                        </div>
-                        <button id="increaseBet" class="bet-btn">+</button>
-                    </div>
-                    <div id="betPresets">
-                        <button class="preset-btn" data-bet="1">1</button>
-                        <button class="preset-btn" data-bet="2">2</button>
-                        <button class="preset-btn" data-bet="3">3</button>
-                        <button class="preset-btn" data-bet="5">5</button>
-                        <button class="preset-btn" data-bet="10">10</button>
-                        <button class="preset-btn" data-bet="20">20</button>
-                        <button class="preset-btn" data-bet="50">50</button>
-                    </div>
-                </div>
-                
-                <div id="controls">
-                    <button id="cannonUpgrade" style="display: none;">升級炮台</button>
-                    <button id="pauseBtn">暫停</button>
-                </div>
+    <div class="container">
+        <h1>🎮 遊戲中心</h1>
+        <p class="subtitle">歡迎來到 susuyummy 的遊戲世界！</p>
+        
+        <a href="捕魚機/index.html" class="game-card">
+            <div class="game-title">🎣 HTML5 捕魚機</div>
+            <div class="game-description">
+                體驗刺激的捕魚遊戲！智能電光連鎖，6種不同魚類，支援桌面和手機操作
             </div>
-        </div>
-        <div id="gameOver" class="hidden">
-            <div id="gameOverContent">
-                <h2>遊戲結束</h2>
-                <p>最終分數: <span id="finalScore">0</span></p>
-                <button id="restartBtn">重新開始</button>
+            <div class="features">
+                <div class="feature">⚡ 電光連鎖</div>
+                <div class="feature">🎯 智能瞄準</div>
+                <div class="feature">🐟 6種魚類</div>
+                <div class="feature">📱 觸控支援</div>
             </div>
-        </div>
-        <div id="loading">
-            <div id="loadingContent">
-                <h2>載入中...</h2>
-                <div id="progressBar">
-                    <div id="progress"></div>
-                </div>
-            </div>
+        </a>
+        
+        <div class="footer">
+            <p>🚀 由 <a href="https://github.com/susuyummy" class="github-link">susuyummy</a> 製作</p>
+            <p>📖 查看 <a href="https://github.com/susuyummy/ptt-" class="github-link">GitHub 源代碼</a></p>
         </div>
     </div>
-
-    <script src="js/utils.js?v=2"></script>
-    <script src="js/fish.js?v=2"></script>
-    <script src="js/cannon.js?v=2"></script>
-    <script src="js/bullet.js?v=2"></script>
-    <script src="js/fishManager.js?v=2"></script>
-    <script src="js/game.js?v=2"></script>
-    <script src="js/main.js?v=2"></script>
 </body>
 </html> 
